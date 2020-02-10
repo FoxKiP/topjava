@@ -35,7 +35,7 @@ public class UserMealsUtil {
             caloriesMap.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
 
             LocalTime mealTime = meal.getDateTime().toLocalTime();
-            if(mealTime.compareTo(startTime) >= 0 && mealTime.compareTo(endTime) <= 0) {
+            if(TimeUtil.isBetweenInclusive(mealTime, startTime, endTime)) {
                 selectedMeals.add(meal);
             }
         }
@@ -53,23 +53,12 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        Map<LocalDate, Integer> caloriesMap = meals.stream()
-                .collect(Collectors.toMap(meal -> meal.getDateTime().toLocalDate(),
-                        UserMeal::getCalories, Integer::sum));
+        Map<LocalDate, Integer> caloriesSumByDate = meals.stream().collect(Collectors.groupingBy(um->um.getDateTime().toLocalDate(),
+                Collectors.summingInt(UserMeal::getCalories)));
 
-        List<UserMealWithExcess> mealsWithExcess;
-        mealsWithExcess = meals.stream()
-                .filter(meal -> {
-                    LocalTime mealTime = meal.getDateTime().toLocalTime();
-                    return mealTime.compareTo(startTime) >= 0 && mealTime.compareTo(endTime) <= 0;
-                }).map(meal -> {
-                    LocalDateTime dateTime = meal.getDateTime();
-                    String description = meal.getDescription();
-                    int calories = meal.getCalories();
-                    boolean excess = caloriesMap.get(dateTime.toLocalDate()) > caloriesPerDay;
-
-                    return new UserMealWithExcess(dateTime, description, calories, excess);
-                }).collect(Collectors.toList());
-        return mealsWithExcess;
+        return meals.stream().filter(um->TimeUtil.isBetweenInclusive(um.getDateTime().toLocalTime(), startTime, endTime))
+                .map(um->new UserMealWithExcess(um.getDateTime(), um.getDescription(), um.getCalories(),
+                        caloriesSumByDate.get(um.getDateTime().toLocalDate()) > caloriesPerDay))
+                .collect(Collectors.toList());
     }
 }
