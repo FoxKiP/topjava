@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
-<%@ taglib uri="http://topjava/javawebinar.ru/function" prefix="fn" %>
+<%@ taglib prefix="javatime"  uri="http://sargue.net/jsptags/time"%>
+<%@ taglib prefix="fn" uri="http://topjava/javawebinar.ru/functions"%>
 <html>
 <head>
     <title>Meals List</title>

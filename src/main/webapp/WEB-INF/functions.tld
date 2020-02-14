@@ -7,7 +7,7 @@
 
     <tlib-version>1.0</tlib-version>
     <short-name>function</short-name>
-    <uri>http://topjava/javawebinar.ru/function</uri>
+    <uri>http://topjava/javawebinar.ru/functions</uri>
 
     <function>
         <name>fn</name>
