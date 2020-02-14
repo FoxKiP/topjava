@@ -10,20 +10,22 @@
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
 <html>
 <head>
-    <title>Meals</title>
+    <title>Meals List</title>
+    <style>
+        .normal {
+            color: green;
+        }
+        .excess {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<table>
+<table border="1" cellpadding="1" cellspacing="1">
     <c:forEach var="mealTo" items="${mealsTo}">
-        <c:if test="${mealTo.excess}">
-            <c:set var="color" value="#ff0000"/>
-        </c:if>
-        <c:if test="${!mealTo.excess}">
-            <c:set var="color" value="#00ff00"/>
-        </c:if>
         <javatime:format value="${mealTo.dateTime}" pattern="yyyy-MM-dd HH:mm" var="parsedDate"/>
         <tr bgcolor="${color}">
             <td>${mealTo.id}</td>
