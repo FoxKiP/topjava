@@ -25,13 +25,13 @@
 <hr>
 <h2>Meals</h2>
 <table border="1" cellpadding="1" cellspacing="1">
-    <c:forEach var="mealTo" items="${mealsTo}">
-        <javatime:format value="${mealTo.dateTime}" pattern="yyyy-MM-dd HH:mm" var="parsedDate"/>
-        <tr bgcolor="${color}">
-            <td>${mealTo.id}</td>
+    <c:forEach var="meal" items="${mealsTo}">
+        <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+        <javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm" var="parsedDate"/>
+        <tr class="${meal.excess ? normal : excess}">
             <td>${parsedDate}</td>
-            <td>${mealTo.description}</td>
-            <td>${mealTo.calories}</td>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
         </tr>
     </c:forEach>
 </table>
