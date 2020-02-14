@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
+<%@ taglib uri="http://topjava/javawebinar.ru/function" prefix="fn" %>
 <html>
 <head>
     <title>Meals List</title>
@@ -29,7 +30,7 @@
         <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
         <javatime:format value="${meal.dateTime}" pattern="yyyy-MM-dd HH:mm" var="parsedDate"/>
         <tr class="${meal.excess ? 'excess' : 'normal'}">
-            <td>${parsedDate}</td>
+            <td>${fn:dateToString(meal.dateTime)}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
         </tr>
