@@ -26,11 +26,6 @@ public class MemoryMealService implements MealService {
     }
 
     @Override
-    public void update(Meal meal) {
-        update(meal);
-    }
-
-    @Override
     public List<Meal> getAll() {
         return storage.getAll();
     }
