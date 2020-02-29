@@ -45,10 +45,10 @@ public class MealRestController {
     }
 
     public List<MealTo> filter(String startD, String startT, String endD, String endT) {
-        LocalDate startDate = startD.isEmpty() ? LocalDate.MIN : LocalDate.parse(startD);
-        LocalTime startTime = startT.isEmpty() ? LocalTime.MIN : LocalTime.parse(startT);
-        LocalDate endDate = endD.isEmpty() ? LocalDate.MAX : LocalDate.parse(endD);
-        LocalTime endTime = endT.isEmpty() ? LocalTime.MAX : LocalTime.parse(endT);
+        LocalDate startDate = startD == null || startD.isEmpty() ? LocalDate.MIN : LocalDate.parse(startD);
+        LocalTime startTime = startT == null || startT.isEmpty() ? LocalTime.MIN : LocalTime.parse(startT);
+        LocalDate endDate = endD == null || endD.isEmpty() ? LocalDate.MAX : LocalDate.parse(endD);
+        LocalTime endTime = endT == null || endT.isEmpty() ? LocalTime.MAX : LocalTime.parse(endT);
         return MealsUtil.getTos(service.filter(startDate.atTime(startTime), endDate.atTime(endTime)
                 , SecurityUtil.authUserId())
                 , SecurityUtil.authUserCaloriesPerDay());

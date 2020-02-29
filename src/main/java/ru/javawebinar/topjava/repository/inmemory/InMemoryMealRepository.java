@@ -2,15 +2,14 @@ package ru.javawebinar.topjava.repository.inmemory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -49,10 +48,12 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Collection<Meal> getAll(int userId) {
-        return computeIfAbsent(userId).values()
+        Map<Integer, Meal> meals = repository.get(userId);
+        return CollectionUtils.isEmpty(meals) ? Collections.emptyList() : meals.values()
                 .stream()
-                .sorted((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()))
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
+
     }
 
     public List<Meal> filter(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
@@ -63,7 +64,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     private Map<Integer, Meal> computeIfAbsent(int userId) {
-        return repository.computeIfAbsent(userId, id -> new ConcurrentHashMap<>());
+        return repository.computeIfAbsent(userId, ConcurrentHashMap::new);
     }
 }
 
