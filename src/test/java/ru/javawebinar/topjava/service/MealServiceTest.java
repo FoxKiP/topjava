@@ -1,14 +1,12 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -40,6 +38,9 @@ public class MealServiceTest {
 
     private static StringBuilder results = new StringBuilder();
 
+    @Autowired
+    private CacheManager cacheManager;
+
     @Rule
     // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
     public Stopwatch stopwatch = new Stopwatch() {
@@ -58,6 +59,11 @@ public class MealServiceTest {
                 "\n---------------------------------" +
                 results +
                 "\n---------------------------------");
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        cacheManager.getCache("meals").clear();
     }
 
     @Autowired
@@ -122,6 +128,7 @@ public class MealServiceTest {
     public void updateNotFound() throws Exception {
         NotFoundException ex = Assert.assertThrows(NotFoundException.class,
                 () -> service.update(MEAL1, ADMIN_ID));
+        log.info(ex.getMessage());
         Assert.assertEquals("Not found entity with id=" + MEAL1_ID, ex.getMessage());
     }
 
