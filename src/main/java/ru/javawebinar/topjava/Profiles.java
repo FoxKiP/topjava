@@ -6,19 +6,8 @@ public class Profiles {
             JPA = "jpa",
             DATAJPA = "datajpa";
 
-    public static final String REPOSITORY_IMPLEMENTATION = JPA;
+    public static final String REPOSITORY_IMPLEMENTATION = DATAJPA;
 
-    public static String getRepositoryImplementation() {
-        /*
-        try {
-
-        } catch (ClassNotFoundException e1) {
-
-        }
-
-         */
-        return REPOSITORY_IMPLEMENTATION;
-    }
 
     public static final String
             POSTGRES_DB = "postgres",
